@@ -1,9 +1,11 @@
 // TODO: Create a function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
 function renderLicenseBadge(license) {
-    let badge = '';
+    let badge;
     if (license !== 'none') {
         badge = `![license badge](https://img.shields.io/badge/license-${license}-success)`;
+    }else{
+        badge = '';
     }
     return badge;
 }
@@ -29,36 +31,46 @@ function renderLicenseLink(license) {
 function renderLicenseSection(license) {
     let licenseSection = '';
     if (license !== 'none') {
-        licenseSection = `## License\n${license}\n${renderLicenseLink(license)}\n`;
+        licenseSection = `## License\nThe Application is covered under ${license} license\nLearn more about the license from the following link: ${renderLicenseLink(license)}\n`;
     }
     return licenseSection;
 }
 
 // TODO: Create a function to generate markdown for README
 function generateMarkdown(data) {
+  //table of contents  
   let table = ['Description','Installation', 'Usage', 'License', 'Contribution', 'Test', 'Questions'];
   let res ='';
   for(let i=0; i<table.length; i++){
-    res +="- ["+table[i]+"](#"+table[i]+")"+'\n';
+    res+= `- [${table[i]}](#${table[i]})\n`;
   }
+
+  // badges show or not
+  let badgeShow;
+  if(renderLicenseSection(data.license)===''){
+    badgeShow='';
+  }else{
+    badgeShow = `${renderLicenseBadge(data.license)}\n`;
+  }
+
   return `# ${data.title}\n
-${renderLicenseBadge(data.license)}\n
-## Description\n
+${badgeShow}
+## ${table[0]}\n
 ${data.description}\n
 ## Table of Contents\n
 ${res}\n
-## Installation\n
+## ${table[1]}\n
 ${data.installation}\n
-## Usage\n
+## ${table[2]}\n
 ${data.usage}\n
 ${renderLicenseSection(data.license)}
-## Contribution\n
-${data.contribution}\n
-## Test\n
+## ${table[4]}\n
+${data.contributing}\n
+## ${table[5]}\n
 ${data.test}\n
-## Questions\n
-${data.username}\n
-${data.email}\n
+## ${table[6]}\n
+GitHub: ${data.username}. [Click here](https://github.com/${data.username}) to go to my github profile\n
+For aditional questions reach me at ${data.email}\n
 `;
 }
 
